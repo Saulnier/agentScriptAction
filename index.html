@@ -3,258 +3,220 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BLS vs ALS Quick Reference - GMR</title>
+<title>Refinancing Document Checklist - New American Funding</title>
 
 <style>
   :root {
-    --primary: #005DAA;
-    --primary-dark: #003d73;
-    --primary-light: #E8F2FA;
-    --accent: #00A3E0;
-    --bg: #F5F7FA;
+    --primary: #002D5B;
+    --accent: #E31937;
+    --bg: #F8F9FA;
     --card-bg: #ffffff;
-    --text-main: #1f2d3d;
-    --text-muted: #5f6c7b;
-    --radius: 12px;
-    --shadow: 0 4px 14px rgba(0,0,0,0.08);
-    --bls-color: #2E7D32;
-    --bls-light: #E8F5E9;
-    --als-color: #D32F2F;
-    --als-light: #FFEBEE;
+    --text-main: #2C3E50;
+    --text-muted: #6C757D;
+    --border: #DEE2E6;
+    --success: #28A745;
+    --radius: 8px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   body {
-    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
     background: var(--bg);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-main);
-    padding: 20px 16px;
-  }
-
-  .container {
-    max-width: 1200px;
-    margin: auto;
-  }
-
-  .header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: #fff;
-    padding: 24px;
-    border-radius: var(--radius);
-    margin-bottom: 24px;
-    box-shadow: var(--shadow);
-    text-align: center;
-  }
-
-  .header h1 {
-    margin: 0 0 8px 0;
-    font-size: 2rem;
-    font-weight: 700;
-  }
-
-  .header p {
-    margin: 0;
-    font-size: 1rem;
-    opacity: 0.9;
-  }
-
-  .comparison-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-
-  @media (max-width: 768px) {
-    .comparison-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .card {
-    background: var(--card-bg);
-    padding: 24px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-  }
-
-  .card.bls {
-    border-top: 5px solid var(--bls-color);
-  }
-
-  .card.als {
-    border-top: 5px solid var(--als-color);
-  }
-
-  .card h2 {
-    margin: 0 0 8px 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-
-  .card.bls h2 {
-    color: var(--bls-color);
-  }
-
-  .card.als h2 {
-    color: var(--als-color);
-  }
-
-  .card .subtitle {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    font-style: italic;
-  }
-
-  .section {
-    margin-bottom: 24px;
-  }
-
-  .section h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0 0 12px 0;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--primary-light);
-  }
-
-  .section ul {
-    margin: 0;
-    padding-left: 20px;
-  }
-
-  .section li {
-    margin-bottom: 8px;
     line-height: 1.6;
   }
 
-  .badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-right: 8px;
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
   }
 
-  .badge.bls {
-    background: var(--bls-light);
-    color: var(--bls-color);
-  }
-
-  .badge.als {
-    background: var(--als-light);
-    color: var(--als-color);
-  }
-
-  .decision-helper {
-    background: var(--card-bg);
-    padding: 24px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 24px;
-  }
-
-  .decision-helper h2 {
-    margin: 0 0 20px 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    text-align: center;
-  }
-
-  .decision-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-  }
-
-  .decision-table th {
+  .header {
     background: var(--primary);
     color: white;
-    padding: 12px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  .decision-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 0.9rem;
-  }
-
-  .decision-table tr:hover {
-    background: var(--primary-light);
-  }
-
-  .indicator {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 8px;
-  }
-
-  .indicator.bls {
-    background: var(--bls-color);
-  }
-
-  .indicator.als {
-    background: var(--als-color);
-  }
-
-  .quick-tips {
-    background: linear-gradient(135deg, var(--accent) 0%, #0082b3 100%);
-    color: white;
-    padding: 20px 24px;
+    padding: 30px 20px;
+    text-align: center;
     border-radius: var(--radius);
-    margin-bottom: 24px;
+    margin-bottom: 30px;
   }
 
-  .quick-tips h3 {
-    margin: 0 0 12px 0;
+  .header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+
+  .intro-box {
+    background: white;
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    border-left: 5px solid var(--accent);
+  }
+
+  .intro-box h2 {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .intro-box p {
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .section {
+    background: white;
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+  }
+
+  .section h3 {
+    color: var(--primary);
     font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .doc-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.2s ease;
+  }
+
+  .doc-item:hover {
+    border-color: var(--accent);
+    background: #FFF9FA;
+  }
+
+  .doc-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+
+  .doc-content {
+    flex: 1;
+  }
+
+  .doc-title {
     font-weight: 600;
+    color: var(--text-main);
+    font-size: 1rem;
+    margin-bottom: 5px;
   }
 
-  .quick-tips ul {
-    margin: 0;
-    padding-left: 20px;
+  .doc-description {
+    color: var(--text-muted);
+    font-size: 0.9rem;
   }
 
-  .quick-tips li {
-    margin-bottom: 8px;
-    line-height: 1.5;
+  .note {
+    background: #FFF3CD;
+    border-left: 4px solid #FFC107;
+    padding: 15px;
+    border-radius: var(--radius);
+    margin-top: 15px;
+    font-size: 0.9rem;
+  }
+
+  .progress-bar {
+    background: var(--border);
+    height: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, var(--success) 0%, #20c997 100%);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
   }
 
   .btn {
     display: inline-block;
-    padding: 12px 24px;
-    background: var(--primary);
+    padding: 12px 30px;
+    background: var(--accent);
     color: white;
-    text-decoration: none;
-    border-radius: var(--radius);
-    font-weight: 600;
-    transition: background 0.2s ease;
     border: none;
-    cursor: pointer;
+    border-radius: var(--radius);
     font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-decoration: none;
   }
 
   .btn:hover {
-    background: var(--primary-dark);
+    background: #C01530;
+  }
+
+  .btn-secondary {
+    background: var(--primary);
+  }
+
+  .btn-secondary:hover {
+    background: #001f3f;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
   }
 
   .footer {
     text-align: center;
-    margin-top: 32px;
+    margin-top: 40px;
     padding: 20px;
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
 </head>
@@ -264,254 +226,231 @@
 <div class="container">
 
   <div class="header">
-    <h1>BLS vs ALS Quick Reference Guide</h1>
-    <p>Global Medical Response - Agent Training Resource</p>
+    <h1>📋 Refinancing Document Checklist</h1>
+    <p>New American Funding</p>
   </div>
 
-  <div class="quick-tips">
-    <h3>🚨 When to Escalate to ALS</h3>
-    <ul>
-      <li><strong>Life-threatening conditions:</strong> Chest pain, stroke symptoms, severe breathing difficulty, unresponsive patients</li>
-      <li><strong>Critical vital signs:</strong> Abnormal heart rhythms, severe hypotension, respiratory distress</li>
-      <li><strong>Advanced interventions needed:</strong> IV medications, cardiac monitoring, advanced airway management</li>
-      <li><strong>High-risk patients:</strong> Cardiac history, trauma with unstable vital signs, suspected overdose</li>
-    </ul>
+  <div class="intro-box">
+    <h2>What You'll Need to Complete Your Refinance</h2>
+    <p>To process your mortgage refinance application quickly, please gather the following documents. Check off each item as you collect it. Most documents can be uploaded digitally or emailed to your loan officer.</p>
   </div>
 
-  <div class="comparison-grid">
-    
-    <!-- BLS Card -->
-    <div class="card bls">
-      <h2><span class="badge bls">BLS</span> Basic Life Support</h2>
-      <p class="subtitle">Non-emergency and stable patient transport</p>
+  <!-- Progress Tracker -->
+  <div class="section">
+    <h3>Your Progress</h3>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressBar">0% Complete</div>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.9rem;"><span id="completedCount">0</span> of <span id="totalCount">0</span> documents collected</p>
+  </div>
 
-      <div class="section">
-        <h3>Typical Patients</h3>
-        <ul>
-          <li>Stable vital signs</li>
-          <li>Routine dialysis transports</li>
-          <li>Scheduled medical appointments</li>
-          <li>Facility-to-facility transfers (stable)</li>
-          <li>Discharge transports going home</li>
-          <li>Non-urgent wheelchair transports</li>
-        </ul>
-      </div>
+  <!-- Income Documentation -->
+  <div class="section">
+    <h3>1. Income Documentation</h3>
 
-      <div class="section">
-        <h3>Equipment & Capabilities</h3>
-        <ul>
-          <li>Basic first aid supplies</li>
-          <li>Oxygen administration</li>
-          <li>Automated External Defibrillator (AED)</li>
-          <li>Spinal immobilization</li>
-          <li>Bleeding control</li>
-          <li>CPR capability</li>
-          <li>Basic airway management</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h3>Crew Certification</h3>
-        <ul>
-          <li>Emergency Medical Technician (EMT-Basic)</li>
-          <li>BLS certification required</li>
-          <li>Cannot administer medications (except oxygen)</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h3>Cost</h3>
-        <ul>
-          <li>Lower cost option</li>
-          <li>Appropriate for most routine transports</li>
-        </ul>
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Recent Pay Stubs</div>
+        <div class="doc-description">Last 30 days of pay stubs showing year-to-date income</div>
       </div>
     </div>
 
-    <!-- ALS Card -->
-    <div class="card als">
-      <h2><span class="badge als">ALS</span> Advanced Life Support</h2>
-      <p class="subtitle">Critical care and emergency transport</p>
-
-      <div class="section">
-        <h3>Typical Patients</h3>
-        <ul>
-          <li>Unstable vital signs</li>
-          <li>Chest pain / cardiac events</li>
-          <li>Stroke or neurological emergencies</li>
-          <li>Respiratory distress</li>
-          <li>Trauma patients</li>
-          <li>Unconscious or altered mental status</li>
-          <li>Requires IV medications during transport</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h3>Equipment & Capabilities</h3>
-        <ul>
-          <li><strong>Everything BLS provides, PLUS:</strong></li>
-          <li>IV therapy and medication administration</li>
-          <li>Cardiac monitoring (EKG/ECG)</li>
-          <li>Advanced airway management (intubation)</li>
-          <li>Manual defibrillation</li>
-          <li>Emergency medications</li>
-          <li>Ventilator support</li>
-          <li>Blood glucose monitoring</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h3>Crew Certification</h3>
-        <ul>
-          <li>Paramedic (EMT-P) required</li>
-          <li>ACLS certification</li>
-          <li>Advanced medical training</li>
-          <li>Can administer emergency medications</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h3>Cost</h3>
-        <ul>
-          <li>Higher cost due to advanced training & equipment</li>
-          <li>Medically necessary for critical patients</li>
-        </ul>
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">W-2 Forms</div>
+        <div class="doc-description">Last 2 years of W-2 forms from all employers</div>
       </div>
     </div>
 
-  </div>
-
-  <!-- Decision Helper Table -->
-  <div class="decision-helper">
-    <h2>Quick Decision Guide: Patient Condition → Service Level</h2>
-    
-    <table class="decision-table">
-      <thead>
-        <tr>
-          <th>Patient Condition</th>
-          <th>Recommended Service</th>
-          <th>Reason</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Routine dialysis (stable patient)</td>
-          <td><span class="indicator bls"></span>BLS</td>
-          <td>Patient is stable, no advanced care needed</td>
-        </tr>
-        <tr>
-          <td>Discharge from hospital to home</td>
-          <td><span class="indicator bls"></span>BLS</td>
-          <td>Patient medically cleared for discharge</td>
-        </tr>
-        <tr>
-          <td>Wheelchair transport to appointment</td>
-          <td><span class="indicator bls"></span>BLS</td>
-          <td>Non-emergency, stable patient</td>
-        </tr>
-        <tr>
-          <td>Chest pain or cardiac symptoms</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>Requires cardiac monitoring and potential intervention</td>
-        </tr>
-        <tr>
-          <td>Difficulty breathing / respiratory distress</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>May need advanced airway management or medications</td>
-        </tr>
-        <tr>
-          <td>Stroke symptoms (facial droop, slurred speech)</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>Time-critical, requires advanced assessment</td>
-        </tr>
-        <tr>
-          <td>Unconscious or unresponsive</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>Critical condition requiring advanced life support</td>
-        </tr>
-        <tr>
-          <td>Patient requires IV medications during transport</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>BLS cannot administer IV medications</td>
-        </tr>
-        <tr>
-          <td>Trauma with stable vital signs</td>
-          <td><span class="indicator bls"></span>BLS</td>
-          <td>If vitals are stable and no critical injuries</td>
-        </tr>
-        <tr>
-          <td>Trauma with unstable vital signs</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>Requires continuous monitoring and intervention</td>
-        </tr>
-        <tr>
-          <td>Post-surgery transfer (stable)</td>
-          <td><span class="indicator bls"></span>BLS</td>
-          <td>If patient is stable and no complications</td>
-        </tr>
-        <tr>
-          <td>ICU to ICU transfer</td>
-          <td><span class="indicator als"></span>ALS or CCT</td>
-          <td>Critical patients require advanced care</td>
-        </tr>
-        <tr>
-          <td>Patient on ventilator</td>
-          <td><span class="indicator als"></span>ALS/CCT</td>
-          <td>Requires advanced respiratory support</td>
-        </tr>
-        <tr>
-          <td>Suspected overdose</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>May need medication reversal agents (Narcan, etc.)</td>
-        </tr>
-        <tr>
-          <td>Seizure activity</td>
-          <td><span class="indicator als"></span>ALS</td>
-          <td>May require emergency medications</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Key Differences Summary -->
-  <div class="card">
-    <h2 style="color: var(--primary); margin-bottom: 20px;">Key Differences Summary</h2>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-      <div>
-        <h3 style="color: var(--bls-color); font-size: 1rem; margin-bottom: 12px;">✅ Choose BLS When:</h3>
-        <ul style="margin: 0; padding-left: 20px;">
-          <li>Patient is medically stable</li>
-          <li>Routine scheduled transport</li>
-          <li>No advanced interventions needed</li>
-          <li>Discharge or facility transfer (stable)</li>
-          <li>Non-emergency situation</li>
-        </ul>
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Tax Returns (If Self-Employed)</div>
+        <div class="doc-description">Last 2 years of complete personal tax returns with all schedules</div>
       </div>
-      
-      <div>
-        <h3 style="color: var(--als-color); font-size: 1rem; margin-bottom: 12px;">🚨 Choose ALS When:</h3>
-        <ul style="margin: 0; padding-left: 20px;">
-          <li>Patient has critical condition</li>
-          <li>Life-threatening symptoms present</li>
-          <li>IV medications required during transport</li>
-          <li>Cardiac monitoring needed</li>
-          <li>Emergency or time-sensitive transport</li>
-        </ul>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Profit & Loss Statement (If Self-Employed)</div>
+        <div class="doc-description">Year-to-date P&L for current year</div>
       </div>
     </div>
   </div>
 
-  <div style="text-align: center; margin-top: 32px;">
-    <button class="btn" onclick="window.print()">Print This Guide</button>
+  <!-- Asset Documentation -->
+  <div class="section">
+    <h3>2. Asset Documentation</h3>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Bank Statements</div>
+        <div class="doc-description">Most recent 2 months of all checking and savings accounts (all pages)</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Investment Account Statements</div>
+        <div class="doc-description">Most recent statements for retirement accounts, stocks, bonds (401k, IRA, etc.)</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Gift Letter (If Applicable)</div>
+        <div class="doc-description">Signed letter if using gift funds for closing costs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property & Loan Documentation -->
+  <div class="section">
+    <h3>3. Property & Current Loan Information</h3>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Current Mortgage Statement</div>
+        <div class="doc-description">Most recent statement showing current balance and payment</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Homeowners Insurance Declaration Page</div>
+        <div class="doc-description">Current policy showing coverage amounts and effective dates</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Property Tax Bill</div>
+        <div class="doc-description">Most recent annual property tax statement</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">HOA Statement (If Applicable)</div>
+        <div class="doc-description">Current HOA fees and contact information</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Identification -->
+  <div class="section">
+    <h3>4. Personal Identification</h3>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Photo ID</div>
+        <div class="doc-description">Copy of driver's license or state-issued ID (front and back)</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Social Security Card</div>
+        <div class="doc-description">Copy of Social Security card or verification letter</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Documentation -->
+  <div class="section">
+    <h3>5. Additional Documentation (If Applicable)</h3>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Divorce Decree or Separation Agreement</div>
+        <div class="doc-description">If applicable, including any alimony or child support details</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Bankruptcy or Foreclosure Papers</div>
+        <div class="doc-description">Discharge papers if applicable within the last 7 years</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Rental Income Documentation</div>
+        <div class="doc-description">Lease agreements and proof of rental income if applicable</div>
+      </div>
+    </div>
+
+    <div class="doc-item">
+      <input type="checkbox" class="doc-checkbox" onchange="updateProgress()">
+      <div class="doc-content">
+        <div class="doc-title">Explanation Letters</div>
+        <div class="doc-description">Letters of explanation for any large deposits, credit issues, or employment gaps</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>📌 Note:</strong> Your loan officer may request additional documentation based on your specific situation. Documents should be clear, complete, and recent.
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="section">
+    <h3>Next Steps</h3>
+    <p style="margin-bottom: 20px; color: var(--text-muted);">Once you've gathered all required documents, you can submit them to your loan officer.</p>
+    
+    <div class="action-buttons">
+      <button class="btn" onclick="alert('Upload functionality would be integrated with your document management system')">Upload Documents</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print This Checklist</button>
+    </div>
   </div>
 
   <div class="footer">
-    <p><strong>Global Medical Response</strong> | Internal Training Resource</p>
-    <p>For questions about service level determination, contact your supervisor or dispatch</p>
+    <p><strong>New American Funding</strong></p>
+    <p>Questions? Contact your loan officer or call our customer service team</p>
+    <p style="margin-top: 10px; font-size: 0.85rem;">NMLS #6606 | Equal Housing Lender</p>
   </div>
 
 </div>
+
+<script>
+  function updateProgress() {
+    const checkboxes = document.querySelectorAll('.doc-checkbox');
+    const total = checkboxes.length;
+    let completed = 0;
+
+    checkboxes.forEach(checkbox => {
+      if (checkbox.checked) completed++;
+    });
+
+    const percentage = Math.round((completed / total) * 100);
+    
+    document.getElementById('progressBar').style.width = percentage + '%';
+    document.getElementById('progressBar').textContent = percentage + '% Complete';
+    document.getElementById('completedCount').textContent = completed;
+    document.getElementById('totalCount').textContent = total;
+  }
+
+  // Initialize counts on page load
+  window.addEventListener('load', function() {
+    updateProgress();
+  });
+</script>
 
 </body>
 </html>
