@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>First American - Closing Delay Management</title>
+<title>First American - Closing Cost Breakdown Assistant</title>
 
 <style>
   :root {
@@ -42,7 +42,7 @@
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
@@ -65,427 +65,332 @@
     opacity: 0.95;
   }
 
-  /* Status Banner */
-  .status-banner {
+  /* Progress Checklist */
+  .progress-checklist {
     background: white;
     padding: 25px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 25px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  @media (max-width: 900px) {
-    .status-banner {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .status-item {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-  }
-
-  .status-item.original {
-    background: var(--info-light);
-  }
-
-  .status-item.current {
-    background: var(--danger-light);
-  }
-
-  .status-item.days-delayed {
-    background: var(--warning-light);
-  }
-
-  .status-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-  }
-
-  .status-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-main);
-  }
-
-  /* Progress Section */
-  .progress-card {
-    background: white;
-    padding: 30px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     margin-bottom: 30px;
   }
 
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .progress-header h2 {
+  .progress-checklist h2 {
     color: var(--fa-blue);
-    font-size: 1.5rem;
-  }
-
-  .progress-percentage {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--fa-red);
-  }
-
-  .progress-bar-container {
-    width: 100%;
-    height: 30px;
-    background: #E9ECEF;
-    border-radius: 15px;
-    overflow: hidden;
     margin-bottom: 20px;
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--fa-red) 0%, #e63946 100%);
-    width: 0%;
-    transition: width 0.5s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  .status-steps {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-  }
-
-  @media (max-width: 900px) {
-    .status-steps {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .status-steps {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .status-step {
-    text-align: center;
-    padding: 15px 10px;
-    border-radius: 10px;
-    background: #F8F9FA;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-  }
-
-  .status-step.completed {
-    background: var(--success-light);
-    color: var(--success);
-    border-color: var(--success);
-  }
-
-  .status-step.active {
-    background: var(--fa-blue);
-    color: white;
-    border-color: var(--fa-blue);
-  }
-
-  .status-step.blocked {
-    background: var(--danger-light);
-    color: var(--danger);
-    border-color: var(--danger);
-  }
-
-  /* Customer Info */
-  .customer-info {
-    background: white;
-    padding: 30px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 25px;
-  }
-
-  .customer-info h2 {
-    color: var(--fa-blue);
     font-size: 1.4rem;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 3px solid var(--fa-red);
   }
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  @media (max-width: 900px) {
-    .info-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .info-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .info-item {
-    background: var(--bg);
-    padding: 18px;
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
     border-radius: 10px;
-    border-left: 4px solid var(--fa-blue);
-  }
-
-  .info-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
-  }
-
-  .info-value {
-    font-size: 1.1rem;
-    color: var(--text-main);
-    font-weight: 600;
-  }
-
-  /* Delay Reasons */
-  .delays-section {
-    background: white;
-    padding: 30px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 25px;
-  }
-
-  .delays-section h2 {
-    color: var(--fa-blue);
-    font-size: 1.4rem;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 3px solid var(--fa-red);
-  }
-
-  .delay-card {
+    margin-bottom: 10px;
     background: var(--bg);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border-left: 5px solid var(--warning);
     transition: all 0.2s ease;
   }
 
-  .delay-card:hover {
+  .checklist-item:hover {
+    background: #E9ECEF;
+  }
+
+  .checklist-item.completed {
+    background: var(--success-light);
+  }
+
+  .checklist-item input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--fa-blue);
+  }
+
+  .checklist-content {
+    flex: 1;
+  }
+
+  .checklist-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin-bottom: 5px;
+  }
+
+  .checklist-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  /* Two Column Layout */
+  .main-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 1100px) {
+    .main-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Cost Breakdown Section */
+  .cost-section {
+    background: white;
+    padding: 30px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
-    transform: translateX(3px);
   }
 
-  .delay-card.resolved {
-    border-left-color: var(--success);
-    opacity: 0.7;
+  .cost-section h2 {
+    color: var(--fa-blue);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--fa-red);
   }
 
-  .delay-header {
+  .cost-category {
+    margin-bottom: 30px;
+  }
+
+  .category-header {
+    background: linear-gradient(135deg, var(--fa-blue) 0%, var(--fa-blue-dark) 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-  }
-
-  .delay-type {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text-main);
-  }
-
-  .delay-status {
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  .status-pending {
-    background: var(--warning-light);
-    color: #856404;
-  }
-
-  .status-resolved {
-    background: var(--success-light);
-    color: var(--success);
-  }
-
-  .delay-description {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-  }
-
-  .delay-meta {
-    display: flex;
-    gap: 20px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    flex-wrap: wrap;
-  }
-
-  .delay-actions {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .btn-small {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
-  .btn-resolve {
-    background: var(--success);
+  .category-header:hover {
+    transform: translateX(3px);
+  }
+
+  .category-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .category-total {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  .cost-items {
+    padding-left: 20px;
+  }
+
+  .cost-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid #E9ECEF;
+    transition: background 0.2s ease;
+  }
+
+  .cost-item:hover {
+    background: var(--bg);
+  }
+
+  .cost-item-name {
+    font-size: 0.95rem;
+    color: var(--text-main);
+  }
+
+  .cost-item-amount {
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .cost-item.variable {
+    background: var(--warning-light);
+  }
+
+  .variable-badge {
+    background: var(--warning);
     color: white;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 10px;
   }
 
-  .btn-resolve:hover {
-    background: #218838;
-  }
-
-  .btn-update {
-    background: var(--fa-blue);
+  .total-section {
+    background: linear-gradient(135deg, var(--fa-red) 0%, #b81027 100%);
     color: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 30px;
   }
 
-  .btn-update:hover {
-    background: var(--fa-blue-dark);
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
   }
 
-  /* Form Section */
-  .form-section {
+  .total-row.grand-total {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding-top: 15px;
+    border-top: 2px solid rgba(255,255,255,0.3);
+  }
+
+  /* Agent Script Panel */
+  .script-panel {
     background: white;
-    padding: 30px;
+    padding: 25px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin-bottom: 25px;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
   }
 
-  .form-section h2 {
+  .script-panel h3 {
     color: var(--fa-blue);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 3px solid var(--fa-red);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--fa-red);
   }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-
-  @media (max-width: 768px) {
-    .form-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-
-  label {
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--text-main);
-    font-size: 0.95rem;
-  }
-
-  label.required::after {
-    content: " *";
-    color: var(--fa-red);
-  }
-
-  input, select, textarea {
-    padding: 12px;
-    border: 2px solid #E0E0E0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--fa-blue);
-    box-shadow: 0 0 0 3px rgba(0,59,92,0.1);
-  }
-
-  input.filled, select.filled {
-    border-color: var(--success);
-    background: #F8FFF9;
-  }
-
-  textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-
-  /* Info Boxes */
-  .info-box {
+  .script-box {
     background: var(--info-light);
     border-left: 5px solid var(--info);
-    padding: 18px;
+    padding: 20px;
     border-radius: 8px;
-    margin: 20px 0;
-    font-size: 0.95rem;
+    margin-bottom: 20px;
   }
 
-  .info-box strong {
+  .script-label {
+    font-weight: 700;
     color: var(--info);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .script-text {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .talking-points {
+    background: var(--warning-light);
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .talking-points h4 {
+    color: #856404;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .talking-points ul {
+    margin-left: 20px;
+  }
+
+  .talking-points li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+  }
+
+  /* Alert Boxes */
+  .alert-box {
+    padding: 18px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .alert-box.danger {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+  }
+
+  .alert-box.warning {
+    background: var(--warning-light);
+    border-left: 5px solid var(--warning);
+  }
+
+  .alert-icon {
+    font-size: 2rem;
+  }
+
+  .alert-content strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.05rem;
+  }
+
+  /* Customer Info */
+  .customer-info {
+    background: var(--bg);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #DEE2E6;
+  }
+
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .info-value {
+    font-weight: 600;
+    color: var(--text-main);
   }
 
   /* Buttons */
   .button-group {
     display: flex;
-    gap: 15px;
-    margin-top: 25px;
+    gap: 12px;
+    margin-top: 20px;
     flex-wrap: wrap;
   }
 
   .btn {
-    padding: 14px 30px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 10px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
+    flex: 1;
+    min-width: 140px;
   }
 
   .btn-primary {
@@ -495,17 +400,15 @@
 
   .btn-primary:hover {
     background: var(--fa-blue-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,59,92,0.3);
   }
 
-  .btn-secondary {
-    background: #6C757D;
+  .btn-success {
+    background: var(--success);
     color: white;
   }
 
-  .btn-secondary:hover {
-    background: #5A6268;
+  .btn-success:hover {
+    background: #218838;
   }
 
   /* Toast */
@@ -539,315 +442,332 @@
 <div class="container">
 
   <div class="header">
-    <h1>⏱️ Closing Delay Management</h1>
-    <p>First American Title Insurance - Track & Resolve Delays</p>
+    <h1>💰 Closing Cost Breakdown Assistant</h1>
+    <p>First American Title Insurance - Agent Support Tool</p>
   </div>
 
-  <!-- Status Banner -->
-  <div class="status-banner">
-    <div class="status-item original">
-      <div class="status-label">Original Closing Date</div>
-      <div class="status-value" id="originalDate">Mar 15, 2026</div>
-    </div>
-
-    <div class="status-item current">
-      <div class="status-label">New Estimated Closing</div>
-      <div class="status-value" id="newDate">Mar 22, 2026</div>
-    </div>
-
-    <div class="status-item days-delayed">
-      <div class="status-label">Days Delayed</div>
-      <div class="status-value" id="daysDelayed">7 Days</div>
-    </div>
-  </div>
-
-  <!-- Progress Card -->
-  <div class="progress-card">
-    <div class="progress-header">
-      <h2>Resolution Progress</h2>
-      <div class="progress-percentage" id="progressPercent">0%</div>
-    </div>
+  <!-- Progress Checklist -->
+  <div class="progress-checklist">
+    <h2>Review Checklist - Complete All Steps</h2>
     
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="progressBar"></div>
+    <div class="checklist-item">
+      <input type="checkbox" id="check1" onclick="updateChecklist()">
+      <div class="checklist-content">
+        <div class="checklist-title">1. Review Full Closing Cost Summary</div>
+        <div class="checklist-desc">Explain each major cost category to the customer</div>
+      </div>
     </div>
 
-    <div class="status-steps">
-      <div class="status-step completed" id="step1">Application</div>
-      <div class="status-step completed" id="step2">Title Search</div>
-      <div class="status-step active blocked" id="step3">Underwriting</div>
-      <div class="status-step" id="step4">Clear to Close</div>
-      <div class="status-step" id="step5">Closing</div>
+    <div class="checklist-item">
+      <input type="checkbox" id="check2" onclick="updateChecklist()">
+      <div class="checklist-content">
+        <div class="checklist-title">2. Validate Title, Escrow & Settlement Charges</div>
+        <div class="checklist-desc">Confirm all First American fees are accurate</div>
+      </div>
     </div>
-  </div>
 
-  <!-- Customer Information -->
-  <div class="customer-info">
-    <h2>Transaction Information</h2>
-    
-    <div class="info-grid">
-      <div class="info-item">
-        <div class="info-label">File Number</div>
-        <div class="info-value">FA-2026-19284</div>
+    <div class="checklist-item">
+      <input type="checkbox" id="check3" onclick="updateChecklist()">
+      <div class="checklist-content">
+        <div class="checklist-title">3. Identify Costs That May Change</div>
+        <div class="checklist-desc">Highlight variable charges and set expectations</div>
       </div>
+    </div>
 
-      <div class="info-item">
-        <div class="info-label">Buyer</div>
-        <div class="info-value">Robert & Jennifer Martinez</div>
-      </div>
-
-      <div class="info-item">
-        <div class="info-label">Property Address</div>
-        <div class="info-value">742 Elm Avenue, Scottsdale, AZ</div>
-      </div>
-
-      <div class="info-item">
-        <div class="info-label">Seller</div>
-        <div class="info-value">David Thompson</div>
-      </div>
-
-      <div class="info-item">
-        <div class="info-label">Lender</div>
-        <div class="info-value">Wells Fargo Bank</div>
-      </div>
-
-      <div class="info-item">
-        <div class="info-label">Purchase Price</div>
-        <div class="info-value">$625,000</div>
+    <div class="checklist-item">
+      <input type="checkbox" id="check4" onclick="updateChecklist()">
+      <div class="checklist-content">
+        <div class="checklist-title">4. Reinforce Wire Instructions & Fraud Prevention</div>
+        <div class="checklist-desc">Review safe payment practices</div>
       </div>
     </div>
   </div>
 
-  <!-- Delay Reasons -->
-  <div class="delays-section">
-    <h2>Active Delay Reasons (3)</h2>
+  <!-- Main Content -->
+  <div class="main-content">
 
-    <!-- Delay 1 -->
-    <div class="delay-card" id="delay1">
-      <div class="delay-header">
-        <div class="delay-type">🔴 Appraisal Delay</div>
-        <div class="delay-status status-pending">Pending</div>
+    <!-- Left Column: Cost Breakdown -->
+    <div class="cost-section">
+      <h2>Closing Cost Breakdown - $625,000 Purchase</h2>
+
+      <!-- Customer Info -->
+      <div class="customer-info">
+        <div class="info-row">
+          <span class="info-label">Buyer:</span>
+          <span class="info-value">Alex & Jennifer Johnson</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Property:</span>
+          <span class="info-value">742 Elm Avenue, Scottsdale, AZ</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Closing Date:</span>
+          <span class="info-value">March 22, 2026</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">File Number:</span>
+          <span class="info-value">FA-2026-19284</span>
+        </div>
       </div>
-      <div class="delay-description">
-        Appraisal ordered on Feb 28. Appraiser needs additional time due to recent comparable sales research. New appraisal delivery date: March 18.
+
+      <!-- Category 1: Lender Fees -->
+      <div class="cost-category">
+        <div class="category-header" onclick="toggleCategory(this)">
+          <div class="category-title">A. Lender Fees</div>
+          <div class="category-total">$2,850.00</div>
+        </div>
+        <div class="cost-items">
+          <div class="cost-item">
+            <span class="cost-item-name">Loan Origination Fee (0.5%)</span>
+            <span class="cost-item-amount">$3,125.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Loan Discount Points (Optional)</span>
+            <span class="cost-item-amount">$0.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Application Fee</span>
+            <span class="cost-item-amount">$500.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Underwriting Fee</span>
+            <span class="cost-item-amount">$895.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Appraisal Fee</span>
+            <span class="cost-item-amount">$650.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Credit Report Fee</span>
+            <span class="cost-item-amount">$75.00</span>
+          </div>
+        </div>
       </div>
-      <div class="delay-meta">
-        <span>📅 Reported: Mar 5, 2026</span>
-        <span>⏱️ Estimated Delay: 3 days</span>
-        <span>👤 Responsible: Lender/Appraiser</span>
+
+      <!-- Category 2: Title & Settlement Services (First American) -->
+      <div class="cost-category">
+        <div class="category-header" onclick="toggleCategory(this)">
+          <div class="category-title">B. Title & Settlement Services (First American)</div>
+          <div class="category-total">$2,475.00</div>
+        </div>
+        <div class="cost-items">
+          <div class="cost-item">
+            <span class="cost-item-name">Title Insurance - Lender's Policy</span>
+            <span class="cost-item-amount">$1,250.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Title Insurance - Owner's Policy</span>
+            <span class="cost-item-amount">$850.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Settlement/Closing Fee</span>
+            <span class="cost-item-amount">$375.00</span>
+          </div>
+        </div>
       </div>
-      <div class="delay-actions">
-        <button class="btn-small btn-resolve" onclick="resolveDelay(1)">Mark as Resolved</button>
-        <button class="btn-small btn-update" onclick="addUpdate(1)">Add Update</button>
+
+      <!-- Category 3: Prepaid Items -->
+      <div class="cost-category">
+        <div class="category-header" onclick="toggleCategory(this)">
+          <div class="category-title">C. Prepaid Items</div>
+          <div class="category-total">$4,125.00</div>
+        </div>
+        <div class="cost-items">
+          <div class="cost-item variable">
+            <span class="cost-item-name">Homeowners Insurance (1 year)
+              <span class="variable-badge">MAY VARY</span>
+            </span>
+            <span class="cost-item-amount">$1,800.00</span>
+          </div>
+          <div class="cost-item variable">
+            <span class="cost-item-name">Prepaid Interest (15 days @ $45/day)
+              <span class="variable-badge">MAY VARY</span>
+            </span>
+            <span class="cost-item-amount">$675.00</span>
+          </div>
+          <div class="cost-item variable">
+            <span class="cost-item-name">Property Tax Reserve (6 months)
+              <span class="variable-badge">MAY VARY</span>
+            </span>
+            <span class="cost-item-amount">$1,650.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 4: Recording & Transfer Fees -->
+      <div class="cost-category">
+        <div class="category-header" onclick="toggleCategory(this)">
+          <div class="category-title">D. Government Recording & Transfer Fees</div>
+          <div class="category-total">$425.00</div>
+        </div>
+        <div class="cost-items">
+          <div class="cost-item variable">
+            <span class="cost-item-name">Deed Recording Fee
+              <span class="variable-badge">MAY VARY</span>
+            </span>
+            <span class="cost-item-amount">$75.00</span>
+          </div>
+          <div class="cost-item variable">
+            <span class="cost-item-name">Mortgage Recording Fee
+              <span class="variable-badge">MAY VARY</span>
+            </span>
+            <span class="cost-item-amount">$150.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Transfer Tax</span>
+            <span class="cost-item-amount">$200.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 5: Other Costs -->
+      <div class="cost-category">
+        <div class="category-header" onclick="toggleCategory(this)">
+          <div class="category-title">E. Other Costs</div>
+          <div class="category-total">$750.00</div>
+        </div>
+        <div class="cost-items">
+          <div class="cost-item">
+            <span class="cost-item-name">Home Inspection</span>
+            <span class="cost-item-amount">$450.00</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-item-name">Survey Fee</span>
+            <span class="cost-item-amount">$300.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Section -->
+      <div class="total-section">
+        <div class="total-row">
+          <span>Subtotal - All Closing Costs:</span>
+          <span>$10,625.00</span>
+        </div>
+        <div class="total-row">
+          <span>Down Payment (20%):</span>
+          <span>$125,000.00</span>
+        </div>
+        <div class="total-row grand-total">
+          <span>TOTAL CASH TO CLOSE:</span>
+          <span>$135,625.00</span>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn btn-primary" onclick="showToast('Closing Disclosure exported to PDF')">
+          📄 Export Closing Disclosure
+        </button>
+        <button class="btn btn-success" onclick="showToast('Summary emailed to customer')">
+          📧 Email Summary to Customer
+        </button>
       </div>
     </div>
 
-    <!-- Delay 2 -->
-    <div class="delay-card" id="delay2">
-      <div class="delay-header">
-        <div class="delay-type">🔴 Missing Seller Documents</div>
-        <div class="delay-status status-pending">Pending</div>
+    <!-- Right Column: Agent Script -->
+    <div class="script-panel">
+      <h3>📞 Agent Script & Guidance</h3>
+
+      <!-- Script 1 -->
+      <div class="script-box">
+        <div class="script-label">🎯 Opening Script</div>
+        <div class="script-text">
+          "Thank you for taking the time to review your closing costs with me today. I'm going to walk you through each section of your Closing Disclosure so you understand exactly what you're paying for. This is a $625,000 purchase, and your total cash to close will be $135,625. This includes your 20% down payment and all closing costs. Do you have your Closing Disclosure in front of you?"
+        </div>
       </div>
-      <div class="delay-description">
-        Waiting for seller to provide: (1) Paid HOA statement, (2) Termite inspection clearance letter. Seller's agent contacted daily.
+
+      <!-- Section A Script -->
+      <div class="talking-points">
+        <h4>💡 Section A: Lender Fees ($2,850)</h4>
+        <ul>
+          <li><strong>Say:</strong> "These are fees charged by your lender, Wells Fargo, for processing and approving your loan."</li>
+          <li><strong>Explain:</strong> Origination fee is 0.5% of your loan amount - this is the lender's administrative fee</li>
+          <li><strong>Note:</strong> You chose not to pay discount points to buy down your rate</li>
+          <li><strong>Highlight:</strong> Appraisal and credit report were already paid at application</li>
+        </ul>
       </div>
-      <div class="delay-meta">
-        <span>📅 Reported: Mar 8, 2026</span>
-        <span>⏱️ Estimated Delay: 2 days</span>
-        <span>👤 Responsible: Seller</span>
+
+      <!-- Section B Script -->
+      <div class="talking-points">
+        <h4>💡 Section B: First American Fees ($2,475)</h4>
+        <ul>
+          <li><strong>Say:</strong> "These are First American's fees for title insurance and settlement services."</li>
+          <li><strong>Explain:</strong> "Title insurance protects you AND your lender from any ownership disputes or liens we might have missed."</li>
+          <li><strong>Key Point:</strong> "You're getting TWO policies - one protects the lender, one protects YOU as the owner."</li>
+          <li><strong>Value:</strong> "This is a one-time fee that protects you as long as you own the home."</li>
+        </ul>
       </div>
-      <div class="delay-actions">
-        <button class="btn-small btn-resolve" onclick="resolveDelay(2)">Mark as Resolved</button>
-        <button class="btn-small btn-update" onclick="addUpdate(2)">Add Update</button>
+
+      <!-- Section C Script -->
+      <div class="talking-points">
+        <h4>⚠️ Section C: Prepaid Items ($4,125) - VARIABLE</h4>
+        <ul>
+          <li><strong>Say:</strong> "These amounts may change slightly before closing based on your actual closing date."</li>
+          <li><strong>Insurance:</strong> "Your annual homeowners insurance premium - you'll need proof of coverage before closing."</li>
+          <li><strong>Prepaid Interest:</strong> "Interest from closing date until your first payment - this changes if closing date moves."</li>
+          <li><strong>Property Tax:</strong> "We collect 6 months upfront for your escrow account."</li>
+        </ul>
       </div>
+
+      <!-- Wire Fraud Warning -->
+      <div class="alert-box danger">
+        <div class="alert-icon">🚨</div>
+        <div class="alert-content">
+          <strong>CRITICAL: Wire Fraud Prevention</strong>
+          "Before we finish, I need to discuss wire transfer safety. NEVER trust wiring instructions sent via email. Always call our office directly at the number you have on file to verify. We will NEVER change wiring instructions at the last minute. If you receive ANY email about updated wire instructions - it's fraud. Call us immediately."
+        </div>
+      </div>
+
+      <!-- Variable Costs Warning -->
+      <div class="alert-box warning">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+          <strong>Set Expectations: Variable Costs</strong>
+          "Items marked 'MAY VARY' include prepaid interest, property taxes, and recording fees. These can change based on your final closing date and county requirements. Your final amount could be $200-$500 different than shown here."
+        </div>
+      </div>
+
+      <!-- Closing Script -->
+      <div class="script-box">
+        <div class="script-label">✅ Closing Script</div>
+        <div class="script-text">
+          "Do you have any questions about any of these costs? I want to make sure you're 100% comfortable with everything before closing day. Remember, you'll receive your final Closing Disclosure at least 3 business days before closing - review it carefully and call me if anything looks different. And please remember: verify all wire instructions by calling our office directly. Do NOT rely on email for wiring instructions."
+        </div>
+      </div>
+
     </div>
 
-    <!-- Delay 3 -->
-    <div class="delay-card" id="delay3">
-      <div class="delay-header">
-        <div class="delay-type">🔴 Loan Underwriting Condition</div>
-        <div class="delay-status status-pending">Pending</div>
-      </div>
-      <div class="delay-description">
-        Lender requires additional documentation: buyer's 2 most recent bank statements and letter of explanation for large deposit.
-      </div>
-      <div class="delay-meta">
-        <span>📅 Reported: Mar 10, 2026</span>
-        <span>⏱️ Estimated Delay: 2 days</span>
-        <span>👤 Responsible: Buyer/Lender</span>
-      </div>
-      <div class="delay-actions">
-        <button class="btn-small btn-resolve" onclick="resolveDelay(3)">Mark as Resolved</button>
-        <button class="btn-small btn-update" onclick="addUpdate(3)">Add Update</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add New Delay -->
-  <div class="form-section">
-    <h2>Report New Delay</h2>
-    
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="required">Delay Reason</label>
-        <select id="delayReason" onchange="updateProgress()">
-          <option value="">Select reason...</option>
-          <option value="appraisal">Appraisal Delay</option>
-          <option value="inspection">Inspection Issues</option>
-          <option value="documents">Missing Documents</option>
-          <option value="financing">Loan/Financing Delay</option>
-          <option value="title">Title Issue</option>
-          <option value="repairs">Repair Negotiations</option>
-          <option value="survey">Survey Delay</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="required">Responsible Party</label>
-        <select id="responsibleParty" onchange="updateProgress()">
-          <option value="">Select party...</option>
-          <option value="buyer">Buyer</option>
-          <option value="seller">Seller</option>
-          <option value="lender">Lender</option>
-          <option value="appraiser">Appraiser</option>
-          <option value="inspector">Inspector</option>
-          <option value="title-company">Title Company</option>
-          <option value="other">Other Third Party</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="required">Description</label>
-      <textarea id="delayDescription" oninput="updateProgress()" placeholder="Provide details about the delay and what is needed to resolve it..."></textarea>
-    </div>
-
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="required">Estimated Days Delayed</label>
-        <input type="number" id="estimatedDays" oninput="updateProgress()" placeholder="0" min="0">
-      </div>
-
-      <div class="form-group">
-        <label>New Estimated Closing Date</label>
-        <input type="date" id="newClosingDate" onchange="updateProgress()">
-      </div>
-    </div>
-
-    <div class="info-box">
-      <strong>📞 Communication Tip:</strong> When explaining delays to customers, focus on solutions and next steps rather than dwelling on problems. Provide specific timelines and keep all parties updated daily.
-    </div>
-
-    <div class="button-group">
-      <button class="btn btn-primary" onclick="addDelay()">Log Delay</button>
-      <button class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
-    </div>
   </div>
 
 </div>
 
 <script>
-  let resolvedCount = 0;
-  const totalDelays = 3;
-
-  /* ----- Resolve Delay ----- */
-  function resolveDelay(delayNum) {
-    const delayCard = document.getElementById('delay' + delayNum);
-    const statusBadge = delayCard.querySelector('.delay-status');
-    
-    if (statusBadge.classList.contains('status-resolved')) {
-      showToast('⚠️ This delay is already marked as resolved');
-      return;
-    }
-
-    if (confirm('Mark this delay as resolved? This will update the closing timeline.')) {
-      delayCard.classList.add('resolved');
-      statusBadge.textContent = 'Resolved';
-      statusBadge.classList.remove('status-pending');
-      statusBadge.classList.add('status-resolved');
-      
-      resolvedCount++;
-      updateProgress();
-      showToast('✅ Delay resolved! Progress updated.');
-    }
-  }
-
-  /* ----- Add Update ----- */
-  function addUpdate(delayNum) {
-    const update = prompt('Enter status update for this delay:');
-    if (update && update.trim()) {
-      showToast('📝 Update logged for delay #' + delayNum);
-    }
-  }
-
-  /* ----- Add New Delay ----- */
-  function addDelay() {
-    const reason = document.getElementById('delayReason').value;
-    const description = document.getElementById('delayDescription').value;
-    const party = document.getElementById('responsibleParty').value;
-    const days = document.getElementById('estimatedDays').value;
-
-    if (!reason || !description || !party || !days) {
-      alert('⚠️ Please complete all required fields');
-      return;
-    }
-
-    showToast('✅ Delay logged and customer notified');
-    resetForm();
-  }
-
-  /* ----- Reset Form ----- */
-  function resetForm() {
-    document.querySelectorAll('input, select, textarea').forEach(field => {
-      if (field.tagName === 'SELECT') {
-        field.selectedIndex = 0;
+  function updateChecklist() {
+    const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    checkboxes.forEach((checkbox, index) => {
+      const item = checkbox.closest('.checklist-item');
+      if (checkbox.checked) {
+        item.classList.add('completed');
       } else {
-        field.value = '';
-      }
-      field.classList.remove('filled');
-    });
-  }
-
-  /* ----- Progress Tracking ----- */
-  function updateProgress() {
-    // Mark fields as filled
-    document.querySelectorAll('input, select, textarea').forEach(input => {
-      if (input.value && input.value.trim() !== '') {
-        input.classList.add('filled');
-      } else {
-        input.classList.remove('filled');
+        item.classList.remove('completed');
       }
     });
 
-    // Calculate resolution progress
-    const percentage = Math.round((resolvedCount / totalDelays) * 100);
-    
-    document.getElementById('progressBar').style.width = percentage + '%';
-    document.getElementById('progressPercent').textContent = percentage + '%';
-    
-    if (percentage > 0) {
-      document.getElementById('progressBar').textContent = percentage + '%';
-    }
-
-    // Update status steps
-    if (resolvedCount >= 1) {
-      document.getElementById('step3').classList.remove('blocked');
-      document.getElementById('step3').classList.add('active');
-    }
-    if (resolvedCount >= 2) {
-      document.getElementById('step3').classList.add('completed');
-      document.getElementById('step3').classList.remove('active');
-      document.getElementById('step4').classList.add('active');
-    }
-    if (resolvedCount === totalDelays) {
-      document.getElementById('step4').classList.add('completed');
-      document.getElementById('step4').classList.remove('active');
-      document.getElementById('step5').classList.add('active');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    if (allChecked) {
+      showToast('✅ All review steps completed!');
     }
   }
 
-  /* ----- Toast ----- */
+  function toggleCategory(header) {
+    const items = header.nextElementSibling;
+    if (items.style.display === 'none') {
+      items.style.display = 'block';
+    } else {
+      items.style.display = 'none';
+    }
+  }
+
   function showToast(message) {
     const toast = document.getElementById('toast');
     toast.textContent = message;
@@ -857,8 +777,12 @@
     }, 3000);
   }
 
-  // Initialize
-  updateProgress();
+  // Show all categories by default
+  window.addEventListener('load', function() {
+    document.querySelectorAll('.cost-items').forEach(items => {
+      items.style.display = 'block';
+    });
+  });
 </script>
 
 </body>
