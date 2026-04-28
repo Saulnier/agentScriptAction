@@ -3,1283 +3,396 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cotality — Script Hub</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<title>Western Union — Receiver Correction</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --ink: #0D1B2A;
-  --ink-mid: #2C3E50;
-  --ink-soft: #64748B;
-  --page: #F8F9FB;
-  --white: #FFFFFF;
-  --border: #E4E8EF;
+  :root {
+    --black:   #111111;
+    --gray-1:  #333333;
+    --gray-2:  #666666;
+    --gray-3:  #999999;
+    --gray-4:  #CCCCCC;
+    --gray-5:  #EFEFEF;
+    --gray-6:  #F7F7F7;
+    --white:   #FFFFFF;
+    --gold:    #FFD700;
+    --green:   #1A7A4A;
+    --green-l: #EAF4EE;
+    --amber:   #854F0B;
+    --amber-l: #FAEEDA;
+    --amber-b: #EF9F27;
+    --red:     #A32D2D;
+    --red-l:   #FCEBEB;
+    --radius:  10px;
+    --shadow:  0 2px 16px rgba(0,0,0,0.07);
+  }
 
-  /* Department accent colors */
-  --acc-accounting:  #00B8A0;
-  --acc-tax:         #F59E0B;
-  --acc-sales:       #6366F1;
-  --acc-credit:      #EF4444;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  --accent: #00B8A0; /* default, overridden per dept */
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--gray-6);
+    color: var(--black);
+    padding: 24px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
 
-  --radius: 14px;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
-}
+  .wrap { max-width: 560px; margin: 0 auto; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  /* HEADER */
+  .header {
+    background: var(--black);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .wu-logo {
+    background: var(--gold);
+    color: var(--black);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .header-title { color: #fff; font-size: 14px; font-weight: 600; }
+  .header-sub { color: rgba(255,255,255,0.4); font-size: 11px; margin-top: 2px; }
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--page);
-  color: var(--ink);
-  min-height: 100vh;
-}
+  /* MTCN BAR */
+  .mtcn-bar {
+    background: var(--white);
+    border: 1px solid var(--gray-5);
+    border-top: none;
+    padding: 9px 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mtcn-label { font-size: 11px; color: var(--gray-2); }
+  .mtcn-val { font-weight: 600; font-size: 13px; letter-spacing: 0.5px; }
+  .spacer { flex: 1; }
+  .pill {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 12px; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 0.6px;
+  }
+  .pill-amber { background: var(--amber-l); color: var(--amber); }
+  .pill-green { background: var(--green-l); color: var(--green); }
 
-/* ── TOP NAV ── */
-.topnav {
-  background: var(--ink);
-  color: white;
-  padding: 0 32px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.topnav-brand { display: flex; align-items: center; gap: 12px; }
-.topnav-logo {
-  width: 32px; height: 32px;
-  background: var(--acc-accounting);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 600; font-size: 0.65rem; color: var(--ink);
-  letter-spacing: 0.5px;
-}
-.topnav-title { font-size: 0.9rem; font-weight: 500; opacity: 0.9; }
-.topnav-sub { font-size: 0.72rem; opacity: 0.45; margin-left: 8px; }
-.topnav-back {
-  font-size: 0.75rem; opacity: 0.5; cursor: pointer;
-  display: flex; align-items: center; gap: 5px;
-  transition: opacity 0.15s;
-  background: none; border: none; color: white; font-family: inherit;
-}
-.topnav-back:hover { opacity: 0.9; }
-.topnav-back.hidden { visibility: hidden; }
+  /* CARD */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-5);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
 
-/* ── SCREENS ── */
-.screen { display: none; animation: fadeUp 0.25s ease; }
-.screen.active { display: block; }
+  /* CURRENT VALUES */
+  .current-block {
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--gray-5);
+    background: var(--gray-6);
+  }
+  .block-label {
+    font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--gray-3); margin-bottom: 10px;
+  }
+  .current-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid #EBEBEB;
+  }
+  .current-row:last-child { border-bottom: none; }
+  .cr-label { font-size: 11px; color: var(--gray-2); }
+  .cr-val   { font-size: 11px; font-weight: 600; color: var(--black); }
+  .cr-val.red { color: var(--red); }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+  /* FORM */
+  .form-block {
+    padding: 18px 22px;
+  }
 
-/* ── PICKER: DEPARTMENT ── */
-.picker-wrap {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 48px 24px 64px;
-}
-.picker-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 10px;
-}
-.picker-heading {
-  font-family: 'DM Serif Display', serif;
-  font-size: 2rem;
-  color: var(--ink);
-  margin-bottom: 6px;
-  line-height: 1.2;
-}
-.picker-sub {
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-  margin-bottom: 40px;
-}
+  .field-group { margin-bottom: 16px; }
+  .field-group:last-of-type { margin-bottom: 0; }
 
-.dept-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media(max-width:580px){ .dept-grid { grid-template-columns: 1fr; } }
+  label {
+    display: block;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--gray-2); margin-bottom: 6px;
+  }
 
-.dept-card {
-  background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 26px;
-  cursor: pointer;
-  transition: all 0.18s;
-  position: relative;
-  overflow: hidden;
-}
-.dept-card::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
-  background: var(--dept-color, #ccc);
-  border-radius: 4px 0 0 4px;
-}
-.dept-card:hover {
-  border-color: var(--dept-color, #ccc);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-.dept-icon { font-size: 1.6rem; margin-bottom: 14px; }
-.dept-name {
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: var(--ink);
-}
-.dept-desc { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.55; }
-.dept-count {
-  margin-top: 16px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--dept-color, #ccc);
-}
+  input, select {
+    width: 100%;
+    border: 1.5px solid var(--gray-4);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--black);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+  }
+  input:focus, select:focus { border-color: var(--black); }
 
-/* ── PICKER: SCENARIO ── */
-.scenario-wrap {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 48px 24px 64px;
-}
-.dept-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 14px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-  border: 1.5px solid;
-}
+  .reason-label {
+    font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--gray-3); margin: 18px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .reason-label::after { content:''; flex:1; height:1px; background: var(--gray-5); }
 
-.scenario-list { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+  /* SUBMIT */
+  .form-footer {
+    padding: 16px 22px;
+    border-top: 1px solid var(--gray-5);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .btn {
+    padding: 10px 22px; border-radius: 6px; border: none;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .btn-black { background: var(--black); color: var(--white); }
+  .btn-black:hover { background: var(--gray-1); }
+  .btn-ghost {
+    background: var(--white); border: 1.5px solid var(--gray-4);
+    color: var(--gray-1);
+  }
+  .btn-ghost:hover { border-color: var(--black); color: var(--black); }
+  .btn:disabled { opacity: 0.4; cursor: default; }
 
-.scenario-card {
-  background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px 22px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.16s;
-}
-.scenario-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-sm);
-}
-.scenario-left {}
-.scenario-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
-.scenario-desc { font-size: 0.78rem; color: var(--ink-soft); }
-.scenario-steps {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--ink-soft);
-  white-space: nowrap;
-  margin-left: 16px;
-  flex-shrink: 0;
-}
-.scenario-arrow { color: var(--accent); margin-left: 10px; font-size: 1.1rem; }
+  /* SUCCESS STATE */
+  .success-block {
+    display: none;
+    padding: 32px 22px;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .success-icon {
+    width: 48px; height: 48px;
+    background: var(--green-l);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin: 0 auto 8px;
+  }
+  .success-title { font-size: 15px; font-weight: 700; color: var(--green); }
+  .success-sub { font-size: 12px; color: var(--gray-2); line-height: 1.6; }
+  .success-detail {
+    margin-top: 14px;
+    background: var(--gray-6);
+    border-radius: 6px;
+    padding: 12px 16px;
+    text-align: left;
+    width: 100%;
+  }
+  .success-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; }
+  .success-row span:first-child { color: var(--gray-2); }
+  .success-row span:last-child { font-weight: 600; color: var(--black); }
 
-/* ── SCRIPT VIEW ── */
-.script-layout {
-  display: flex;
-  min-height: calc(100vh - 54px);
-}
-
-/* Left sidebar */
-.script-sidebar {
-  width: 240px;
-  flex-shrink: 0;
-  background: var(--ink);
-  color: white;
-  padding: 32px 0;
-  position: sticky;
-  top: 54px;
-  height: calc(100vh - 54px);
-  overflow-y: auto;
-}
-
-.sidebar-scenario {
-  padding: 0 22px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  margin-bottom: 24px;
-}
-.sidebar-dept-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  opacity: 0.4;
-  margin-bottom: 5px;
-}
-.sidebar-scenario-name {
-  font-size: 0.88rem;
-  font-weight: 500;
-  line-height: 1.4;
-  opacity: 0.9;
-}
-
-.step-nav { padding: 0 12px; }
-.step-nav-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s;
-  margin-bottom: 2px;
-}
-.step-nav-item:hover { background: rgba(255,255,255,0.05); }
-.step-nav-item.active { background: rgba(255,255,255,0.1); }
-.step-nav-item.done { opacity: 0.45; }
-
-.step-nav-num {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.62rem;
-  font-weight: 600;
-  flex-shrink: 0;
-  margin-top: 1px;
-  transition: all 0.2s;
-}
-.step-nav-item.active .step-nav-num {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--ink);
-}
-.step-nav-item.done .step-nav-num {
-  background: rgba(255,255,255,0.12);
-  border-color: transparent;
-}
-.step-nav-label {
-  font-size: 0.75rem;
-  opacity: 0.7;
-  line-height: 1.4;
-}
-.step-nav-item.active .step-nav-label { opacity: 1; }
-
-/* progress bar at bottom of sidebar */
-.sidebar-progress {
-  padding: 20px 22px 0;
-  margin-top: auto;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: var(--ink);
-  padding: 16px 22px;
-}
-.prog-label {
-  font-size: 0.62rem;
-  opacity: 0.4;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-}
-.prog-bar-bg {
-  background: rgba(255,255,255,0.1);
-  border-radius: 999px;
-  height: 4px;
-  overflow: hidden;
-}
-.prog-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--accent);
-  transition: width 0.4s ease;
-}
-
-/* Right content */
-.script-content {
-  flex: 1;
-  padding: 48px 52px;
-  max-width: 680px;
-}
-
-.step-eyebrow {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 10px;
-}
-.step-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.75rem;
-  color: var(--ink);
-  margin-bottom: 6px;
-  line-height: 1.25;
-}
-.step-subtitle {
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  margin-bottom: 36px;
-  line-height: 1.6;
-}
-
-/* Script block — the words to say */
-.script-block {
-  background: white;
-  border-left: 3px solid var(--accent);
-  border-radius: 0 10px 10px 0;
-  padding: 18px 22px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow-sm);
-}
-.script-block-label {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-.script-block-text {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--ink-mid);
-}
-.script-block-text em {
-  background: rgba(0,184,160,0.1);
-  color: var(--ink);
-  font-style: normal;
-  padding: 0 3px;
-  border-radius: 3px;
-  font-weight: 500;
-}
-
-/* Checklist */
-.checklist { margin-bottom: 28px; }
-.checklist-title {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--ink-soft);
-  margin-bottom: 12px;
-}
-.check-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 11px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 9px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: all 0.15s;
-  background: white;
-  user-select: none;
-}
-.check-item:hover { border-color: var(--accent); }
-.check-item.checked {
-  background: #F0FBF9;
-  border-color: #A7E8E1;
-}
-.check-box {
-  width: 20px; height: 20px;
-  border-radius: 5px;
-  border: 1.5px solid var(--border);
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem;
-  color: transparent;
-  transition: all 0.15s;
-  margin-top: 1px;
-}
-.check-item.checked .check-box {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-}
-.check-text {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: var(--ink-mid);
-}
-.check-item.checked .check-text {
-  color: var(--ink-soft);
-  text-decoration: line-through;
-  text-decoration-color: #A7E8E1;
-}
-
-/* Notes field */
-.notes-field {
-  width: 100%;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem;
-  color: var(--ink);
-  resize: vertical;
-  min-height: 80px;
-  outline: none;
-  transition: border-color 0.15s;
-  background: white;
-  margin-bottom: 24px;
-}
-.notes-field:focus { border-color: var(--accent); }
-
-/* Step nav buttons */
-.step-buttons {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.btn {
-  border: none;
-  border-radius: 9px;
-  padding: 12px 24px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.15s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-}
-.btn-next {
-  background: var(--accent);
-  color: var(--ink);
-}
-.btn-next:hover { filter: brightness(1.08); }
-.btn-prev {
-  background: white;
-  color: var(--ink-soft);
-  border: 1.5px solid var(--border);
-}
-.btn-prev:hover { border-color: var(--ink-soft); color: var(--ink); }
-.btn-form {
-  background: var(--ink);
-  color: white;
-  margin-left: auto;
-}
-.btn-form:hover { background: #1A3A5C; }
-
-/* Completion screen */
-.complete-wrap {
-  text-align: center;
-  padding: 60px 32px;
-  max-width: 480px;
-  margin: 0 auto;
-}
-.complete-icon {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  background: #EDFAF8;
-  border: 2px solid var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem;
-  margin: 0 auto 24px;
-}
-.complete-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-}
-.complete-sub {
-  font-size: 0.875rem;
-  color: var(--ink-soft);
-  line-height: 1.65;
-  margin-bottom: 32px;
-}
-.form-links { display: flex; flex-direction: column; gap: 10px; }
-.form-link-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.15s;
-}
-.form-link-card:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
-.form-link-card span { color: var(--accent); }
-
-/* ── UTILITIES ── */
-.hidden { display: none !important; }
+  .warn-note {
+    font-size: 11px; color: var(--amber);
+    background: var(--amber-l);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 14px;
+    text-align: left;
+    width: 100%;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<!-- TOP NAV -->
-<nav class="topnav">
-  <div class="topnav-brand">
-    <div class="topnav-logo">CTY</div>
-    <span class="topnav-title">Script Hub</span>
-    <span class="topnav-sub">Agent Call Guide</span>
-  </div>
-  <button class="topnav-back hidden" id="backBtn" onclick="goBack()">← Back</button>
-</nav>
-
-<!-- ══════════════════════════════
-     SCREEN 1 — DEPARTMENT PICKER
-════════════════════════════════ -->
-<div class="screen active" id="screen-dept">
-  <div class="picker-wrap">
-    <div class="picker-eyebrow">Cotality · Agent Script Hub</div>
-    <div class="picker-heading">Which team are you on?</div>
-    <div class="picker-sub">Select your department to see available call scripts.</div>
-
-    <div class="dept-grid">
-
-      <div class="dept-card" style="--dept-color: var(--acc-accounting)" onclick="pickDept('accounting')">
-        <div class="dept-icon">🧾</div>
-        <div class="dept-name">Corporate Accounting</div>
-        <div class="dept-desc">Billing inquiries, payment disputes, invoice resolution, and collections calls.</div>
-        <div class="dept-count" style="color:var(--acc-accounting)">2 scenarios</div>
-      </div>
-
-      <div class="dept-card" style="--dept-color: var(--acc-tax)" onclick="pickDept('tax')">
-        <div class="dept-icon">🏢</div>
-        <div class="dept-name">Commercial Tax</div>
-        <div class="dept-desc">Tax escrow inquiries, delinquency status, and new loan onboarding tax setup.</div>
-        <div class="dept-count" style="color:var(--acc-tax)">2 scenarios</div>
-      </div>
-
-      <div class="dept-card" style="--dept-color: var(--acc-sales)" onclick="pickDept('sales')">
-        <div class="dept-icon">💼</div>
-        <div class="dept-name">Inside Sales</div>
-        <div class="dept-desc">Inbound demo requests, discovery calls, and renewal or upsell conversations.</div>
-        <div class="dept-count" style="color:var(--acc-sales)">2 scenarios</div>
-      </div>
-
-      <div class="dept-card" style="--dept-color: var(--acc-credit)" onclick="pickDept('credit')">
-        <div class="dept-icon">🔍</div>
-        <div class="dept-name">Credit Ops</div>
-        <div class="dept-desc">Dispute intake, bureau freeze requests, fraud calls, and FCRA compliance.</div>
-        <div class="dept-count" style="color:var(--acc-credit)">2 scenarios</div>
-      </div>
-
+  <!-- HEADER -->
+  <div class="header">
+    <div class="wu-logo">WESTERN UNION</div>
+    <div>
+      <div class="header-title">Receiver Details Correction</div>
+      <div class="header-sub">Agent-initiated update — Confidential</div>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════
-     SCREEN 2 — SCENARIO PICKER
-════════════════════════════════ -->
-<div class="screen" id="screen-scenario">
-  <div class="scenario-wrap">
-    <div id="dept-badge-cont"></div>
-    <div class="picker-heading" id="scenario-heading">Select a scenario</div>
-    <div class="picker-sub" id="scenario-sub">Choose the call type that matches this interaction.</div>
-    <div class="scenario-list" id="scenario-list"></div>
+  <!-- MTCN BAR -->
+  <div class="mtcn-bar">
+    <span class="mtcn-label">MTCN:</span>
+    <span class="mtcn-val" id="mtcn">4589127346</span>
+    <div class="spacer"></div>
+    <span class="pill pill-amber" id="statusPill">Pending Correction</span>
   </div>
-</div>
 
-<!-- ══════════════════════════════
-     SCREEN 3 — SCRIPT PLAYER
-════════════════════════════════ -->
-<div class="screen" id="screen-script">
-  <div class="script-layout">
+  <div class="card">
 
-    <!-- Sidebar -->
-    <aside class="script-sidebar">
-      <div class="sidebar-scenario">
-        <div class="sidebar-dept-label" id="sb-dept-label">Department</div>
-        <div class="sidebar-scenario-name" id="sb-scenario-name">Scenario</div>
+    <!-- CURRENT VALUES -->
+    <div class="current-block">
+      <div class="block-label">Current Receiver Details on File</div>
+      <div class="current-row"><span class="cr-label">Name</span><span class="cr-val red" id="curName">Sofia Ramirez</span></div>
+      <div class="current-row"><span class="cr-label">Location</span><span class="cr-val" id="curLoc">Guadalajara, Mexico</span></div>
+      <div class="current-row"><span class="cr-label">Payout Method</span><span class="cr-val" id="curPayout">Cash Pickup</span></div>
+      <div class="current-row"><span class="cr-label">Name Match</span><span class="cr-val red" id="curNameMatch">Mismatch</span></div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-block" id="formBlock">
+      <div class="block-label" style="margin-bottom:14px;">Updated Receiver Details</div>
+
+      <div class="field-group">
+        <label for="newName">Receiver Name</label>
+        <input type="text" id="newName" placeholder="Enter corrected full name"/>
       </div>
-      <nav class="step-nav" id="step-nav"></nav>
-      <div class="sidebar-progress">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="prog-text">0%</span>
-        </div>
-        <div class="prog-bar-bg">
-          <div class="prog-bar-fill" id="prog-bar" style="width:0%"></div>
-        </div>
-      </div>
-    </aside>
 
-    <!-- Content -->
-    <main class="script-content" id="script-content"></main>
+      <div class="field-group">
+        <label for="newLoc">Receiver Location</label>
+        <input type="text" id="newLoc" placeholder="City, Country"/>
+      </div>
+
+      <div class="field-group">
+        <label for="newPayout">Payout Method</label>
+        <select id="newPayout">
+          <option value="">— Select —</option>
+          <option value="Cash Pickup">Cash Pickup</option>
+          <option value="Bank Deposit">Bank Deposit</option>
+          <option value="Mobile Wallet">Mobile Wallet</option>
+          <option value="Home Delivery">Home Delivery</option>
+        </select>
+      </div>
+
+      <div class="reason-label">Correction Reason</div>
+
+      <div class="field-group">
+        <label for="corrReason">Reason for Change</label>
+        <select id="corrReason">
+          <option value="">— Select —</option>
+          <option value="Name entered incorrectly by sender">Name entered incorrectly by sender</option>
+          <option value="Receiver uses different name at pickup location">Receiver uses different name at pickup location</option>
+          <option value="Legal name differs from common name">Legal name differs from common name</option>
+          <option value="Typographical error">Typographical error</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="agentNotes">Agent Notes (optional)</label>
+        <input type="text" id="agentNotes" placeholder="Any additional context…"/>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="form-footer" id="formFooter">
+      <button class="btn btn-black" id="submitBtn" onclick="submitCorrection()">Submit Correction</button>
+      <button class="btn btn-ghost" onclick="resetForm()">Clear</button>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-block" id="successBlock">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Correction Submitted</div>
+      <div class="success-sub">The receiver details have been updated.<br>The transfer will be released once verified.</div>
+      <div class="success-detail" id="successDetail"></div>
+      <div class="warn-note">Remind the customer that re-verification at the pickup location may be required. Allow up to 30 minutes for funds to become available.</div>
+    </div>
 
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════
-const DEPTS = {
-  accounting: {
-    label: 'Corporate Accounting',
-    color: '#00B8A0',
-    icon: '🧾',
-    scenarios: [
-      {
-        id: 'past-due',
-        title: 'Past Due / Collections Call',
-        desc: 'Customer has an outstanding balance — review, negotiate, and resolve.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Set a professional, calm tone before diving into the balance.',
-            script: 'Thank you for calling Cotality Corporate Accounting. My name is <em>Alex Johnson</em>, and I\'m here to help you today. May I have your account number or the name on the account?',
-            checks: [
-              'Greet and introduce yourself',
-              'Ask for account number or name',
-              'Confirm Genesys identity verification is complete',
-            ]
-          },
-          {
-            title: 'Account Review',
-            subtitle: 'Pull the account and confirm the balance details with the customer.',
-            script: 'I\'ve pulled up your account. I can see there\'s a balance of <em>[amount]</em> that\'s been outstanding since <em>[date]</em>. I want to make sure we get this resolved for you today — can you walk me through what\'s happened on your end?',
-            checks: [
-              'Confirm account is open in data form',
-              'Read back the balance and days past due',
-              'Let the customer respond before continuing',
-            ]
-          },
-          {
-            title: 'Resolution',
-            subtitle: 'Offer options — payment in full, payment plan, or escalation.',
-            script: 'I have a few options I can offer you today. We can process a payment in full, or if that\'s not feasible right now, we can set up a payment arrangement. Which works better for your situation?',
-            checks: [
-              'Offer payment in full as first option',
-              'Offer a payment plan as second option',
-              'Document which option the customer selects',
-              'If neither, note for escalation',
-            ]
-          },
-          {
-            title: 'Closing',
-            subtitle: 'Confirm next steps and leave the customer with a clear path forward.',
-            script: 'Just to confirm — we\'ve agreed on <em>[payment amount / plan]</em>. You\'ll receive a confirmation to <em>[email on file]</em> within 24 hours. Is there anything else I can help you with today?',
-            checks: [
-              'Read back the agreed resolution',
-              'Confirm email for documentation',
-              'Ask if there\'s anything else',
-              'Log notes in the data form before closing the ticket',
-            ],
-            notes: true,
-            formLink: 'cotality-corp-accounting.html'
-          }
-        ]
-      },
-      {
-        id: 'invoice-dispute',
-        title: 'Invoice Dispute',
-        desc: 'Customer is contesting a charge — verify, escalate if needed.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Acknowledge the dispute and set expectations for the review process.',
-            script: 'I understand you have a question about a charge on your account — I\'m happy to look into that with you right now. Can you tell me which invoice or charge you\'re referring to?',
-            checks: [
-              'Greet warmly and acknowledge the concern',
-              'Ask for the invoice number or charge amount',
-            ]
-          },
-          {
-            title: 'Verification',
-            subtitle: 'Confirm the charge is valid and pull supporting detail.',
-            script: 'Let me pull that invoice up now. I\'m seeing a charge of <em>[amount]</em> dated <em>[date]</em> for <em>[product/service]</em>. Does that match what you\'re looking at on your end?',
-            checks: [
-              'Pull invoice details in billing system',
-              'Read the line item back to the customer',
-              'Note whether customer agrees or still disputes',
-            ]
-          },
-          {
-            title: 'Resolution or Escalation',
-            subtitle: 'Resolve if possible, or route to a supervisor with full context.',
-            script: 'Based on what I\'m seeing, <em>[the charge appears valid / I can see why this looks unexpected]</em>. <em>[If valid:]</em> I can walk you through exactly what this covers. <em>[If disputed:]</em> I\'d like to escalate this to our billing team who can do a full review within 2 business days.',
-            checks: [
-              'Determine if charge is valid or requires review',
-              'If valid — explain the charge clearly',
-              'If disputed — create a Jira escalation ticket',
-              'Give customer a timeline for follow-up',
-            ],
-            notes: true,
-            formLink: 'cotality-corp-accounting.html'
-          }
-        ]
-      }
-    ]
-  },
-
-  tax: {
-    label: 'Commercial Tax',
-    color: '#F59E0B',
-    icon: '🏢',
-    scenarios: [
-      {
-        id: 'escrow-inquiry',
-        title: 'Tax Escrow Inquiry',
-        desc: 'Customer wants to understand their escrow balance or a shortage.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Confirm the account and the nature of the tax inquiry.',
-            script: 'Thanks for reaching out to Cotality Commercial Tax. My name is <em>Alex Johnson</em>. I see you\'re calling about your property tax escrow — I\'ll take a look at your account right now. Can you confirm the loan or property address?',
-            checks: [
-              'Greet and identify the call type',
-              'Ask for loan number or property address',
-              'Verify identity is confirmed via Genesys',
-            ]
-          },
-          {
-            title: 'Escrow Review',
-            subtitle: 'Walk the customer through their current escrow balance and any shortage.',
-            script: 'I\'m looking at your escrow account now. Your current balance is <em>[amount]</em>. Your most recent tax disbursement of <em>[amount]</em> went out on <em>[date]</em>. <em>[If shortage:]</em> There\'s a projected shortage of <em>[amount]</em> — I\'ll explain what that means for your payments.',
-            checks: [
-              'Pull current escrow balance in DigitalTax Portal',
-              'Confirm last disbursement date and amount',
-              'Identify if a shortage exists',
-              'Explain shortage cause clearly (rate increase, reassessment, etc.)',
-            ]
-          },
-          {
-            title: 'Resolution',
-            subtitle: 'Offer the options available for handling the shortage or balance question.',
-            script: 'For the shortage, you have two options: a one-time payment to bring the account current, or we spread it across your monthly payments over the next 12 months. Which would you prefer?',
-            checks: [
-              'Present one-time vs. spread options',
-              'Confirm customer\'s choice',
-              'Note any changes needed in the system',
-              'Document call in data form',
-            ],
-            notes: true,
-            formLink: 'cotality-corp-accounting.html'
-          }
-        ]
-      },
-      {
-        id: 'tax-delinquency',
-        title: 'Tax Delinquency Status',
-        desc: 'Customer or servicer flagging a potential delinquent tax line.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Confirm details and acknowledge the urgency of a delinquency flag.',
-            script: 'Thank you for calling Cotality Commercial Tax. My name is <em>Alex Johnson</em>. I understand there\'s a concern about a delinquent tax status — let me look that up immediately. Can I get the parcel number or property address?',
-            checks: [
-              'Note urgency — delinquency calls are time-sensitive',
-              'Gather parcel number or property address',
-              'Pull record in DigitalTax Portal',
-            ]
-          },
-          {
-            title: 'Status Lookup',
-            subtitle: 'Confirm whether a delinquency exists and the current tax status.',
-            script: 'I\'ve pulled the record for <em>[address]</em>. The current tax status shows <em>[current / delinquent as of date]</em>. The amount outstanding is <em>[amount]</em>, and the penalty accrual date is <em>[date]</em>.',
-            checks: [
-              'Confirm current vs. delinquent status',
-              'Read back amount owed and penalty date',
-              'Check if a payment has already been initiated',
-            ]
-          },
-          {
-            title: 'Next Steps',
-            subtitle: 'Guide the caller through immediate action to prevent further penalties.',
-            script: 'To prevent additional penalties, a payment of <em>[amount]</em> needs to be submitted before <em>[penalty date]</em>. I can initiate that process now, or if this was a servicer error, I\'ll escalate this to our tax ops team for same-day review.',
-            checks: [
-              'Initiate payment if caller is authorized',
-              'Or flag for same-day escalation if servicer error',
-              'Confirm confirmation number will be sent',
-              'Document outcome in data form',
-            ],
-            notes: true,
-            formLink: 'cotality-corp-accounting.html'
-          }
-        ]
-      }
-    ]
-  },
-
-  sales: {
-    label: 'Inside Sales',
-    color: '#6366F1',
-    icon: '💼',
-    scenarios: [
-      {
-        id: 'inbound-demo',
-        title: 'Inbound Demo Request',
-        desc: 'A prospect has requested a demo — qualify and route appropriately.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Warm welcome — they reached out to us, so momentum is in our favor.',
-            script: 'Hi <em>[name]</em>, thanks so much for reaching out to Cotality — I saw you requested a demo and I wanted to connect personally. I\'m <em>Alex Johnson</em> on our Inside Sales team. Do you have a few minutes to chat about what you\'re looking for?',
-            checks: [
-              'Use the prospect\'s name immediately',
-              'Reference that they reached out (not a cold call)',
-              'Confirm they have time before continuing',
-            ]
-          },
-          {
-            title: 'Discovery',
-            subtitle: 'Understand their business, pain points, and what brought them to Cotality.',
-            script: 'To make sure I connect you with the right team and the most relevant demo — can you tell me a bit about your organization and what problem you\'re trying to solve? What does your current workflow look like for <em>[property data / tax / mortgage analytics]</em>?',
-            checks: [
-              'Ask about company size and industry vertical',
-              'Ask what\'s driving the evaluation right now',
-              'Ask about their current solution or vendor',
-              'Note which Cotality product line fits best',
-            ]
-          },
-          {
-            title: 'Positioning',
-            subtitle: 'Match Cotality\'s strengths to what you just heard.',
-            script: 'Based on what you\'ve shared, it sounds like <em>[specific product]</em> would be a great fit — especially for <em>[their specific pain point]</em>. We work with a number of <em>[their vertical]</em> clients on exactly this. What I\'d suggest is a focused 30-minute demo with our solutions team.',
-            checks: [
-              'Name the specific product that fits',
-              'Connect it to their stated pain point',
-              'Propose a 30-min focused demo as next step',
-            ]
-          },
-          {
-            title: 'Close & Book',
-            subtitle: 'Secure the next step before ending the call.',
-            script: 'I\'ll send you a calendar invite right now for a demo with our specialist team. You\'ll also get a brief overview doc so you can loop in any stakeholders ahead of time. What email should I use?',
-            checks: [
-              'Confirm email address for calendar invite',
-              'Set demo date and time on the call',
-              'Offer to send product overview doc',
-              'Log lead and notes in Salesforce / data form',
-            ],
-            notes: true,
-            formLink: 'cotality-corp-accounting.html'
-          }
-        ]
-      },
-      {
-        id: 'renewal-upsell',
-        title: 'Renewal / Upsell Call',
-        desc: 'Existing customer approaching renewal — retain and potentially expand.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Lead with relationship, not the contract date.',
-            script: 'Hi <em>[name]</em>, this is <em>Alex Johnson</em> from Cotality. I\'m reaching out because your subscription comes up in about <em>[X weeks]</em>, and I wanted to connect before that to make sure you\'re getting full value from the platform. How has it been going?',
-            checks: [
-              'Open with relationship check-in, not renewal pitch',
-              'Reference the renewal window naturally',
-              'Listen before talking about terms',
-            ]
-          },
-          {
-            title: 'Usage Review',
-            subtitle: 'Understand how they\'re actually using the product.',
-            script: 'I was looking at your account before this call — I can see you\'re using <em>[features]</em> heavily. Are there any areas where you feel like you\'re not getting everything you could from the platform?',
-            checks: [
-              'Reference specific usage data from the account',
-              'Ask about underutilized features',
-              'Listen for expansion or frustration signals',
-            ]
-          },
-          {
-            title: 'Renewal & Expansion',
-            subtitle: 'Present renewal terms and any upsell opportunity based on what you heard.',
-            script: 'For your renewal, I can hold your current rate if we finalize before <em>[date]</em>. Based on what you\'ve shared about <em>[use case]</em>, I\'d also love to show you <em>[additional product/feature]</em> — a lot of teams similar to yours have added it and seen <em>[outcome]</em>.',
-            checks: [
-              'Confirm renewal rate and lock-in date',
-              'Present one relevant upsell only — don\'t overwhelm',
-              'Tie upsell to something they said in the call',
-            ]
-          },
-          {
-            title: 'Close & Next Steps',
-            subtitle: 'Commit to a clear next step before hanging up.',
-            script: 'I\'ll send over the renewal proposal along with a summary of what we talked about today. If everything looks good, it\'s a simple e-sign. If you want to explore the add-on, I\'ll include a quick one-pager. Sound good?',
-            checks: [
-              'Confirm proposal being sent same day',
-              'Confirm e-sign process is understood',
-              'Set a follow-up date if they need time to review',
-              'Log call outcome in Salesforce / data form',
-            ],
-            notes: true,
-            formLink: 'cotality-corp-accounting.html'
-          }
-        ]
-      }
-    ]
-  },
-
-  credit: {
-    label: 'Credit Ops',
-    color: '#EF4444',
-    icon: '🔍',
-    scenarios: [
-      {
-        id: 'dispute-intake',
-        title: 'Dispute Intake',
-        desc: 'Customer wants to open a new credit dispute — structured intake flow.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'Acknowledge the dispute and reassure the customer about the process.',
-            script: 'Thank you for calling Cotality Credit Operations. My name is <em>Alex Johnson</em>. I understand you\'d like to dispute information on your credit report — I\'m going to walk you through that process right now. It\'s straightforward and I\'ll make sure everything is documented correctly.',
-            checks: [
-              'Greet and identify as Credit Ops',
-              'Acknowledge the dispute reason',
-              'Set a reassuring, process-focused tone',
-              'Confirm Genesys identity verification complete',
-            ]
-          },
-          {
-            title: 'Dispute Details',
-            subtitle: 'Gather the specifics of what\'s being disputed and which bureaus are involved.',
-            script: 'To open the dispute, I need a few details. First — which item on your report are you disputing? Can you tell me the creditor name and the account? And do you know which bureau — Equifax, Experian, TransUnion, or all three — is showing this?',
-            checks: [
-              'Get creditor name and account number',
-              'Confirm which bureau(s) are involved',
-              'Ask why they believe the item is inaccurate',
-              'Note dispute type: inaccurate info, not mine, fraud, etc.',
-            ]
-          },
-          {
-            title: 'Documentation',
-            subtitle: 'Log the dispute reference and explain the timeline.',
-            script: 'I\'ve opened a dispute reference number: <em>[DSP-XXXX]</em>. Under the FCRA, the bureau has 30 days to investigate. You\'ll receive written confirmation of the outcome. Do you have any supporting documents, like a statement or letter, you\'d like to submit?',
-            checks: [
-              'Generate and read back dispute reference number',
-              'State the 30-day FCRA investigation window',
-              'Ask about supporting documentation',
-              'Log all details in the Credit Ops data form',
-            ]
-          },
-          {
-            title: 'Closing',
-            subtitle: 'Summarize and give the customer clear expectations.',
-            script: 'To recap — I\'ve filed your dispute for <em>[item]</em> with <em>[bureau(s)]</em> under reference <em>[number]</em>. You\'ll hear back within 30 days. If you have any questions in the meantime, you can call us back and reference that dispute number.',
-            checks: [
-              'Read back dispute summary to customer',
-              'Confirm contact info for written response',
-              'Remind them of dispute reference number',
-              'Save case in Credit Ops form before closing',
-            ],
-            notes: true,
-            formLink: 'cotality-credit-ops.html'
-          }
-        ]
-      },
-      {
-        id: 'fraud-call',
-        title: 'Fraud / Identity Theft Call',
-        desc: 'Customer believes their identity was used fraudulently — handle with care.',
-        steps: [
-          {
-            title: 'Opening',
-            subtitle: 'This call requires extra sensitivity. Lead with empathy before process.',
-            script: 'Thank you for calling Cotality Credit Ops. My name is <em>Alex Johnson</em>. I can hear that this is a stressful situation and I want to help you take control of it right now. Before we dive in — are you somewhere you can speak freely?',
-            checks: [
-              'Open with empathy — do not rush to process',
-              'Ask if they\'re in a safe and private place',
-              'Confirm identity via Genesys before proceeding',
-              'Flag call as Fraud / Identity Theft in the system',
-            ]
-          },
-          {
-            title: 'Fraud Scope',
-            subtitle: 'Understand what the customer has discovered and when.',
-            script: 'Can you tell me what you found and when you first noticed it? I want to understand the full picture before we take action — the more detail you can give me, the better I can help.',
-            checks: [
-              'Ask what accounts or items appear fraudulent',
-              'Ask when they first noticed the issue',
-              'Ask if they\'ve already contacted any bureaus or creditors',
-              'Note if a police report has been filed',
-            ]
-          },
-          {
-            title: 'Immediate Actions',
-            subtitle: 'Walk the customer through the protective steps available right now.',
-            script: 'Here\'s what I\'m going to do right now: I\'m placing a fraud alert on your file, which notifies all three bureaus. I\'m also going to flag the accounts you\'ve identified for investigation. I\'d also strongly recommend placing a security freeze — I can walk you through that if you\'d like.',
-            checks: [
-              'Place fraud alert across all three bureaus',
-              'Flag identified accounts for investigation',
-              'Offer to initiate a security freeze',
-              'Advise customer to file a police report if not done',
-              'Provide FTC IdentityTheft.gov as a resource',
-            ]
-          },
-          {
-            title: 'Documentation & Closing',
-            subtitle: 'Ensure everything is logged and the customer knows their next steps.',
-            script: 'I\'ve documented everything on your account under case <em>[number]</em>. You\'ll receive a written summary within 3 business days. This is a real situation and you\'re doing the right thing by calling — our team will be reviewing this closely.',
-            checks: [
-              'Read back case reference number',
-              'Confirm written summary will be sent',
-              'Reassure the customer the case is being taken seriously',
-              'Complete full documentation in Credit Ops data form',
-            ],
-            notes: true,
-            formLink: 'cotality-credit-ops.html'
-          }
-        ]
-      }
-    ]
+const qp = new URLSearchParams(window.location.search);
+function gp(keys, def) {
+  for (let k of (Array.isArray(keys) ? keys : [keys])) {
+    const v = qp.get(k);
+    if (v && v.trim()) return v.trim();
   }
-};
-
-// ═══════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════
-let activeDept = null;
-let activeScenario = null;
-let activeStepIndex = 0;
-let history = []; // screen history for back button
-
-// ═══════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
+  return def;
+}
+function set(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
 }
 
-function goBack() {
-  if (history.length < 2) return;
-  history.pop();
-  const prev = history[history.length - 1];
-  if (prev === 'dept') {
-    showScreen('dept');
-    document.getElementById('backBtn').classList.add('hidden');
-  } else if (prev === 'scenario') {
-    showScreen('scenario');
-    document.getElementById('backBtn').classList.remove('hidden');
+// Populate from params
+const mtcn        = gp(['mtcn','MTCN'], '4589127346');
+const curName     = gp(['receiverName'], 'Sofia Ramirez');
+const curLoc      = gp(['receiverLocation','receiverLoc'], 'Guadalajara, Mexico');
+const curPayout   = gp(['payoutMethod'], 'Cash Pickup');
+const curMatch    = gp(['nameMatch'], 'Mismatch');
+const txStatus    = gp(['txStatus','status'], 'Pending Correction');
+
+set('mtcn', mtcn);
+set('curName', curName);
+set('curLoc', curLoc);
+set('curPayout', curPayout);
+set('curNameMatch', curMatch);
+
+const statusEl = document.getElementById('statusPill');
+statusEl.textContent = txStatus;
+const sl = txStatus.toLowerCase();
+if (sl.includes('pending') || sl.includes('correction')) {
+  statusEl.className = 'pill pill-amber';
+} else if (sl.includes('paid') || sl.includes('complete')) {
+  statusEl.className = 'pill pill-green';
+}
+
+function submitCorrection() {
+  const name    = document.getElementById('newName').value.trim();
+  const loc     = document.getElementById('newLoc').value.trim();
+  const payout  = document.getElementById('newPayout').value;
+  const reason  = document.getElementById('corrReason').value;
+
+  if (!name && !loc && !payout) {
+    alert('Please update at least one receiver detail before submitting.');
+    return;
   }
-}
-
-function pickDept(deptKey) {
-  activeDept = DEPTS[deptKey];
-  const color = activeDept.color;
-
-  // Set CSS accent
-  document.documentElement.style.setProperty('--accent', color);
-
-  // Build badge
-  document.getElementById('dept-badge-cont').innerHTML = `
-    <div class="dept-badge" style="color:${color};border-color:${color};background:${color}18">
-      ${activeDept.icon} ${activeDept.label}
-    </div>`;
-
-  document.getElementById('scenario-heading').textContent = 'Select a scenario';
-  document.getElementById('scenario-sub').textContent = 'Choose the call type that matches this interaction.';
-
-  // Build scenario list
-  const list = document.getElementById('scenario-list');
-  list.innerHTML = activeDept.scenarios.map(s => `
-    <div class="scenario-card" onclick="pickScenario('${s.id}')">
-      <div class="scenario-left">
-        <div class="scenario-title">${s.title}</div>
-        <div class="scenario-desc">${s.desc}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
-        <div class="scenario-steps">${s.steps.length} steps</div>
-        <div class="scenario-arrow">→</div>
-      </div>
-    </div>`).join('');
-
-  history = ['dept', 'scenario'];
-  showScreen('scenario');
-  document.getElementById('backBtn').classList.remove('hidden');
-}
-
-function pickScenario(scenarioId) {
-  activeScenario = activeDept.scenarios.find(s => s.id === scenarioId);
-  activeStepIndex = 0;
-  history.push('script');
-  renderScript();
-  showScreen('script');
-}
-
-// ═══════════════════════════════════════════════
-// SCRIPT RENDERER
-// ═══════════════════════════════════════════════
-function renderScript() {
-  const scenario = activeScenario;
-  const stepCount = scenario.steps.length;
-  const color = activeDept.color;
-
-  // Sidebar meta
-  document.getElementById('sb-dept-label').textContent = activeDept.label;
-  document.getElementById('sb-scenario-name').textContent = scenario.title;
-
-  renderSidebarNav();
-  renderStep();
-}
-
-function renderSidebarNav() {
-  const steps = activeScenario.steps;
-  const nav = document.getElementById('step-nav');
-  nav.innerHTML = steps.map((s, i) => {
-    let cls = 'step-nav-item';
-    if (i === activeStepIndex) cls += ' active';
-    else if (i < activeStepIndex) cls += ' done';
-    return `
-      <div class="${cls}" onclick="jumpToStep(${i})">
-        <div class="step-nav-num">${i < activeStepIndex ? '✓' : i + 1}</div>
-        <div class="step-nav-label">${s.title}</div>
-      </div>`;
-  }).join('');
-
-  // Progress
-  const pct = Math.round((activeStepIndex / steps.length) * 100);
-  document.getElementById('prog-bar').style.width = pct + '%';
-  document.getElementById('prog-text').textContent = pct + '%';
-}
-
-function jumpToStep(i) {
-  activeStepIndex = i;
-  renderSidebarNav();
-  renderStep();
-}
-
-function renderStep() {
-  const steps = activeScenario.steps;
-  const step = steps[activeStepIndex];
-  const isLast = activeStepIndex === steps.length - 1;
-  const color = activeDept.color;
-  const content = document.getElementById('script-content');
-
-  // Checks
-  const checksHtml = step.checks.map((c, ci) => `
-    <div class="check-item" id="check-${ci}" onclick="toggleCheck(${ci})">
-      <div class="check-box">✓</div>
-      <div class="check-text">${c}</div>
-    </div>`).join('');
-
-  // Notes
-  const notesHtml = step.notes ? `
-    <label class="checklist-title" style="display:block;margin-bottom:8px">Quick Notes</label>
-    <textarea class="notes-field" placeholder="Add any call notes here before moving on..."></textarea>` : '';
-
-  // Buttons
-  const prevBtn = activeStepIndex > 0
-    ? `<button class="btn btn-prev" onclick="prevStep()">← Back</button>` : '';
-  const nextBtn = !isLast
-    ? `<button class="btn btn-next" onclick="nextStep()">Next Step →</button>`
-    : `<button class="btn btn-next" onclick="showComplete()" style="background:${color}">Complete Call ✓</button>`;
-  const formBtn = isLast && step.formLink
-    ? `<a class="btn btn-form" href="${step.formLink}" target="_blank">Open Data Form →</a>` : '';
-
-  content.innerHTML = `
-    <div class="step-eyebrow">Step ${activeStepIndex + 1} of ${steps.length} — ${activeDept.label}</div>
-    <div class="step-title">${step.title}</div>
-    <div class="step-subtitle">${step.subtitle}</div>
-
-    <div class="script-block">
-      <div class="script-block-label">Say this</div>
-      <div class="script-block-text">${step.script}</div>
-    </div>
-
-    <div class="checklist">
-      <div class="checklist-title">Complete before moving on</div>
-      ${checksHtml}
-    </div>
-
-    ${notesHtml}
-
-    <div class="step-buttons">
-      ${prevBtn}
-      ${nextBtn}
-      ${formBtn}
-    </div>
-  `;
-}
-
-function toggleCheck(ci) {
-  const el = document.getElementById('check-' + ci);
-  el.classList.toggle('checked');
-}
-
-function nextStep() {
-  if (activeStepIndex < activeScenario.steps.length - 1) {
-    activeStepIndex++;
-    renderSidebarNav();
-    renderStep();
-    document.querySelector('.script-content').scrollTop = 0;
-    window.scrollTo(0, 0);
+  if (!reason) {
+    alert('Please select a reason for the correction.');
+    return;
   }
+
+  // Build summary
+  const rows = [];
+  if (name)   rows.push(['Receiver Name', name]);
+  if (loc)    rows.push(['Location', loc]);
+  if (payout) rows.push(['Payout Method', payout]);
+  rows.push(['Correction Reason', reason]);
+  rows.push(['MTCN', mtcn]);
+
+  const detail = document.getElementById('successDetail');
+  detail.innerHTML = rows.map(([l, v]) =>
+    `<div class="success-row"><span>${l}</span><span>${v}</span></div>`
+  ).join('');
+
+  document.getElementById('formBlock').style.display = 'none';
+  document.getElementById('formFooter').style.display = 'none';
+  document.getElementById('successBlock').style.display = 'flex';
+  document.getElementById('statusPill').textContent = 'Correction Submitted';
+  document.getElementById('statusPill').className = 'pill pill-green';
 }
 
-function prevStep() {
-  if (activeStepIndex > 0) {
-    activeStepIndex--;
-    renderSidebarNav();
-    renderStep();
-    window.scrollTo(0, 0);
-  }
+function resetForm() {
+  document.getElementById('newName').value = '';
+  document.getElementById('newLoc').value = '';
+  document.getElementById('newPayout').value = '';
+  document.getElementById('corrReason').value = '';
+  document.getElementById('agentNotes').value = '';
 }
 
-function showComplete() {
-  const color = activeDept.color;
-  const formLink = activeScenario.steps[activeScenario.steps.length - 1].formLink || '#';
-
-  // Update progress to 100%
-  document.getElementById('prog-bar').style.width = '100%';
-  document.getElementById('prog-text').textContent = '100%';
-
-  // Mark all steps done in sidebar
-  activeStepIndex = activeScenario.steps.length;
-  renderSidebarNav();
-
-  document.getElementById('script-content').innerHTML = `
-    <div class="complete-wrap">
-      <div class="complete-icon">✓</div>
-      <div class="complete-title">Call Complete</div>
-      <div class="complete-sub">
-        You've finished the <strong>${activeScenario.title}</strong> script.<br>
-        Open the data form to log your notes and close the ticket.
-      </div>
-      <div class="form-links">
-        <a class="form-link-card" href="${formLink}" target="_blank">
-          Open Data Form <span>→</span>
-        </a>
-        <div class="form-link-card" onclick="pickDept(Object.keys(DEPTS).find(k=>DEPTS[k]===activeDept))">
-          Run another scenario <span>→</span>
-        </div>
-        <div class="form-link-card" onclick="goHome()">
-          Back to departments <span>→</span>
-        </div>
-      </div>
-    </div>`;
-}
-
-function goHome() {
-  document.documentElement.style.setProperty('--accent', '#00B8A0');
-  history = ['dept'];
-  showScreen('dept');
-  document.getElementById('backBtn').classList.add('hidden');
-}
+window.submitCorrection = submitCorrection;
+window.resetForm = resetForm;
 </script>
 </body>
 </html>
